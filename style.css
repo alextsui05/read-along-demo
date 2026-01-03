@@ -1,0 +1,37 @@
+.waveform-container {
+    display: flex;
+    align-items: center;
+    /* Centers bars vertically for a symmetric look */
+    gap: 2px;
+    width: 100%;
+    height: 150px;
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.bar {
+    flex: 1;
+    background-color: #4A90E2;
+    border-radius: 2px;
+    transition: height 0.2s ease;
+}
+
+/* Optional: Highlight silence */
+.bar.silent {
+    background-color: #ff4d4d;
+    opacity: 0.3;
+}
+
+/* Segment styling */
+.segment {
+    padding: 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.segment.active {
+    background-color: #e3f2fd;
+    box-shadow: 0 0 0 2px #90caf9;
+}
