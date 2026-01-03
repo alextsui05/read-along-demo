@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeSegment = segments.find(segment => {
             const start = parseFloat(segment.getAttribute('data-start'));
             const end = parseFloat(segment.getAttribute('data-end'));
-            return currentTime >= start && currentTime <= end;
+            return currentTime >= start && currentTime < end;
         });
 
         if (activeSegment) {
@@ -53,13 +53,32 @@ function createSegmentsFromData(data) {
     const container = document.getElementById('segments-container');
     container.innerHTML = ''; // Clear previous content
 
+    // Get the audio player element
+    const audioPlayer = document.getElementById('audio-player');
+
     data.segments.forEach((segment, index) => {
         const segmentDiv = document.createElement('div');
         segmentDiv.className = 'segment';
         segmentDiv.textContent = segment.text;
         segmentDiv.setAttribute('data-start', segment.start);
         segmentDiv.setAttribute('data-end', segment.end);
-        // segmentDiv.textContent = `Segment ${index + 1}: ${segment.start.toFixed(2)}s - ${segment.end.toFixed(2)}s`;
+
+        // Make the segment clickable
+        segmentDiv.style.cursor = 'pointer';
+        segmentDiv.addEventListener('click', () => {
+            // Seek to the start time of the segment
+            audioPlayer.currentTime = parseFloat(segment.start);
+
+            // Optional: Play the audio if it's not already playing
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            }
+
+            // Add a visual feedback for the click
+            segmentDiv.classList.add('clicked');
+            setTimeout(() => segmentDiv.classList.remove('clicked'), 200);
+        });
+
         container.appendChild(segmentDiv);
     });
 }

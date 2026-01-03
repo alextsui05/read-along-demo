@@ -35,3 +35,14 @@
     background-color: #e3f2fd;
     box-shadow: 0 0 0 2px #90caf9;
 }
+
+/* Click feedback */
+.segment {
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.segment.clicked {
+    transform: scale(0.98);
+    background-color: #bbdefb;
+}
