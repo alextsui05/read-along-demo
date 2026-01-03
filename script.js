@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (activeSegment) {
             activeSegment.classList.add('active');
-            // Optional: Scroll the segment into view
-            // activeSegment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Scroll the segment into view
+            activeSegment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }
 });

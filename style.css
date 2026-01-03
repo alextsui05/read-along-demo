@@ -1,3 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 100px;
+    /* Add padding to account for the sticky player */
+}
+
+/* Sticky player container */
+#player-container {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 15px 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .waveform-container {
     display: flex;
     align-items: center;
