@@ -4,22 +4,69 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Initializing Read Along App');
 
     const audioPlayer = document.getElementById('audio-player');
+    const sourceButtons = document.querySelectorAll('.source-btn');
     let segments = [];
+    let currentSource = '';
+    let currentTime = 0;
 
-    // Fetch and parse the JSON file
-    fetch('output-p1.json')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Parsed JSON data:', data);
-            createSegmentsFromData(data);
-            segments = Array.from(document.querySelectorAll('.segment'));
+    // Function to load audio source
+    function loadSource(source, jsonFile) {
+        // Save current time before changing source
+        currentTime = audioPlayer.currentTime;
 
-            // Add timeupdate event listener after segments are loaded
-            audioPlayer.addEventListener('timeupdate', updateActiveSegment);
-        })
-        .catch(error => {
-            console.error('Error loading JSON file:', error);
+        // Update source buttons
+        sourceButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.src === source);
         });
+
+        // Load the audio
+        audioPlayer.src = source;
+
+        // Load the corresponding JSON data
+        fetch(jsonFile)
+            .then(response => response.json())
+            .then(data => {
+                createSegmentsFromData(data);
+                segments = Array.from(document.querySelectorAll('.segment'));
+
+                // Restore playback position if it's the same source
+                if (currentSource === source && currentTime < audioPlayer.duration) {
+                    audioPlayer.currentTime = currentTime;
+                } else {
+                    audioPlayer.currentTime = 0;
+                }
+
+                // Play the audio if it was playing before
+                const wasPlaying = !audioPlayer.paused;
+                audioPlayer.load(); // Required for source change to take effect
+                if (wasPlaying) {
+                    audioPlayer.play().catch(e => console.error('Playback failed:', e));
+                }
+
+                currentSource = source;
+            })
+            .catch(error => {
+                console.error(`Error loading JSON file (${jsonFile}):`, error);
+            });
+    }
+
+    // Set up source buttons
+    sourceButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const source = button.dataset.src;
+            const jsonFile = source.replace('.mp3', '.json');
+            loadSource(source, jsonFile);
+        });
+    });
+
+    // Initialize with the first source
+    if (sourceButtons.length > 0) {
+        const firstButton = sourceButtons[0];
+        loadSource(firstButton.dataset.src, firstButton.dataset.src.replace('.mp3', '.json'));
+    }
+
+    // Add timeupdate event listener
+    audioPlayer.addEventListener('timeupdate', updateActiveSegment);
 
     // Function to update the active segment based on current time
     function updateActiveSegment() {

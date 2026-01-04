@@ -10,7 +10,15 @@
     <body>
         <h1>Read Along App</h1>
     <div id="player-container">
-        <audio id="audio-player" controls src="monkey-king-p1.mp3"></audio>
+        <div class="source-selector">
+            <button class="source-btn" data-src="monkey-king-p0.mp3">Part 0</button>
+            <button class="source-btn" data-src="monkey-king-p1.mp3">Part 1</button>
+            <button class="source-btn" data-src="monkey-king-p2.mp3">Part 2</button>
+            <button class="source-btn" data-src="monkey-king-p3.mp3">Part 3</button>
+            <button class="source-btn" data-src="monkey-king-p4.mp3">Part 4</button>
+            <button class="source-btn" data-src="monkey-king-p5.mp3">Part 5</button>
+        </div>
+        <audio id="audio-player" controls></audio>
     </div>
     <div id="segments-container"></div>
     </body>
